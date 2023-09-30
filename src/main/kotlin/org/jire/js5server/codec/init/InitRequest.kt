@@ -1,8 +1,8 @@
 package org.jire.js5server.codec.init
 
-import org.jire.js5server.codec.Incoming
+import org.jire.js5server.codec.Request
 
-sealed interface InitRequest : Incoming {
+sealed interface InitRequest : Request {
 
     data object Rs2 : InitRequest
 

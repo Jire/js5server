@@ -1,8 +1,8 @@
 package org.jire.js5server.codec.js5
 
-import org.jire.js5server.codec.Incoming
+import org.jire.js5server.codec.Request
 
-sealed interface Js5Request : Incoming {
+sealed interface Js5Request : Request {
 
     sealed interface Group : Js5Request {
         val archive: Int

@@ -1,9 +1,9 @@
 package org.jire.js5server.codec.init
 
 import org.jire.js5server.codec.ClientResponse
-import org.jire.js5server.codec.Outgoing
+import org.jire.js5server.codec.Response
 
-sealed interface InitResponse : Outgoing {
+sealed interface InitResponse : Response {
 
     val response: ClientResponse
 
