@@ -10,13 +10,11 @@ import org.jire.js5server.PipelineConstants.IDLE_STATE_HANDLER
 import org.jire.js5server.codec.init.InitDecoder
 import org.jire.js5server.codec.init.InitEncoder
 import org.jire.js5server.codec.init.InitHandler
-import org.openrs2.cache.Store
-import java.nio.file.Path
 import java.util.concurrent.TimeUnit
 
 class Js5ChannelInitializer(
     private val version: Int = 217,
-    private val groupRepository: Js5GroupRepository = Openrs2Js5GroupRepository(),
+    private val groupRepository: Js5GroupRepository = Openrs2Js5GroupRepository().apply(Js5GroupRepository::load),
 
     private val timeout: Long = 30,
     private val timeoutUnit: TimeUnit = TimeUnit.SECONDS
