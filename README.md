@@ -6,3 +6,5 @@ Use Java 17 (or change toolchain in `build.gradle.kts`) and start via `run` Grad
 `Js5ChannelInitializer` to change checked version.
 
 Put cache in `data/cache` directory.
+
+Optionally pass ports as runtime args.
