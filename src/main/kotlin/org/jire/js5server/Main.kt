@@ -1,13 +1,29 @@
 package org.jire.js5server
 
+import org.jire.js5server.codec.js5.Js5Handler
+import java.io.FileInputStream
+import java.util.*
+
 object Main {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val service = Js5Service()
+        val props = Properties().apply {
+            FileInputStream("js5server.properties").use {
+                load(it)
+            }
+        }
+        val config = Js5ServiceConfig(props)
 
-        val ports = args.map { it.toInt() }.ifEmpty { listOf(443, 43594, 50000) }
-        for (port in ports) service.listen(port)
+        val service = Js5Service(config)
+
+        for (port in config.listenPorts) {
+            service.listen(port)
+        }
+
+        if (config.supportPrefetch) {
+            Js5Handler.startPrefetching()
+        }
     }
 
 }

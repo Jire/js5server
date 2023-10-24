@@ -9,13 +9,15 @@ import org.jire.js5server.PipelineConstants.DECODER
 import org.jire.js5server.PipelineConstants.ENCODER
 import org.jire.js5server.PipelineConstants.HANDLER
 import org.jire.js5server.codec.ClientResponse
-import org.jire.js5server.codec.js5.Js5Handler
 import org.jire.js5server.codec.js5.Js5Decoder
+import org.jire.js5server.codec.js5.Js5Handler
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class InitHandler(
     private val version: Int,
+    private val checkVersion: Boolean,
+
     private val groupRepository: Js5GroupRepository
 ) : SimpleChannelInboundHandler<InitRequest>() {
 
@@ -28,7 +30,7 @@ class InitHandler(
             is InitRequest.Js5 -> {
                 ctx.pipeline().remove(DECODER)
 
-                if (version == msg.version) {
+                if (!checkVersion || version == msg.version) {
                     val encoder = ctx.pipeline().get(ENCODER)
                     ctx.writeAndFlush(InitResponse.Js5(ClientResponse.SUCCESSFUL))
                         .addListener { future ->

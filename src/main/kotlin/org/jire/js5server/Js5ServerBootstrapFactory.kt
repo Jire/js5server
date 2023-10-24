@@ -8,7 +8,7 @@ import io.netty.channel.epoll.EpollMode
 import io.netty.channel.socket.SocketChannel
 
 class Js5ServerBootstrapFactory(
-    private val channelInitializer: ChannelInitializer<SocketChannel> = Js5ChannelInitializer(),
+    private val channelInitializer: ChannelInitializer<SocketChannel>,
 
     private val allocator: ByteBufAllocator = ByteBufAllocator.DEFAULT,
 

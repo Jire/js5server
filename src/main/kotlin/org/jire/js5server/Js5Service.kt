@@ -5,7 +5,11 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class Js5Service(
-    bootstrapFactory: BootstrapFactory = Js5ServerBootstrapFactory()
+    config: Js5ServiceConfig,
+
+    bootstrapFactory: BootstrapFactory = Js5ServerBootstrapFactory(
+        Js5ChannelInitializer(config)
+    )
 ) : AutoCloseable {
 
     private val parentGroup = bootstrapFactory.createEventLoopGroup(1)
