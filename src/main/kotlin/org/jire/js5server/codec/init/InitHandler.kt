@@ -19,6 +19,10 @@ class InitHandler(
     private val groupRepository: Js5GroupRepository
 ) : SimpleChannelInboundHandler<InitRequest>() {
 
+    override fun channelActive(ctx: ChannelHandlerContext) {
+        ctx.read()
+    }
+
     override fun channelRead0(ctx: ChannelHandlerContext, msg: InitRequest) {
         when (msg) {
             is InitRequest.Js5 -> {
