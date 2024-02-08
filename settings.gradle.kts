@@ -9,7 +9,7 @@ dependencyResolutionManagement {
         maven(url = "https://repo.openrs2.org/repository/openrs2-snapshots/")
     }
     pluginManagement.plugins.apply {
-        kotlin("jvm").version("1.9.10")
+        kotlin("jvm").version("1.9.22")
         id("com.github.johnrengelman.shadow") version "8.1.1"
     }
 }
