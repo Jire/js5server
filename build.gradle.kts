@@ -82,7 +82,7 @@ publishing {
                 licenses {
                     license {
                         name = "MIT License"
-                        url = "https://github.com/Jire/js5server/blob/master/LICENSE.txt"
+                        url = "https://github.com/Jire/js5server/blob/main/LICENSE.txt"
                     }
                 }
                 developers {
