@@ -5,10 +5,12 @@ plugins {
 
     `maven-publish`
     signing
+    id("io.github.gradle-nexus.publish-plugin")
 }
 
 group = "org.jire"
 version = "1.0.0"
+description = "fast simple JS5 server"
 
 application {
     mainClass.set("org.jire.js5server.Main")
@@ -55,18 +57,20 @@ java {
     withSourcesJar()
 }
 
-val ossUsername: String? by lazy { System.getProperty("OSS_USERNAME") }
-val ossPassword: String? by lazy { System.getProperty("OSS_PASSWORD ") }
-
 publishing {
     repositories {
         maven {
             val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
             val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
             url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
-            credentials {
-                username = ossUsername
-                password = ossPassword
+
+            val ossrhUsername = providers.environmentVariable("OSSRH_USERNAME")
+            val ossrhPassword = providers.environmentVariable("OSSRH_PASSWORD")
+            if (ossrhUsername.isPresent && ossrhPassword.isPresent) {
+                credentials {
+                    username = ossrhUsername.get()
+                    password = ossrhPassword.get()
+                }
             }
         }
     }
@@ -104,4 +108,30 @@ publishing {
 
 signing {
     sign(publishing.publications["mavenJava"])
+}
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            if (false) { // only for users registered in Sonatype after 24 Feb 2021
+                nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+                snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+            }
+
+            val ossrhUsername = providers.environmentVariable("OSSRH_USERNAME")
+            val ossrhPassword = providers.environmentVariable("OSSRH_PASSWORD")
+            if (ossrhUsername.isPresent && ossrhPassword.isPresent) {
+                username.set(ossrhUsername.get())
+                password.set(ossrhPassword.get())
+            }
+        }
+    }
+}
+
+// do not generate extra load on Nexus with new staging repository if signing fails
+val initializeSonatypeStagingRepository by tasks.existing
+subprojects {
+    initializeSonatypeStagingRepository {
+        shouldRunAfter(tasks.withType<Sign>())
+    }
 }
