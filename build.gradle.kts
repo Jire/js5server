@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "org.jire"
-version = "1.0.1"
+version = "1.0.2"
 description = "fast simple JS5 server"
 
 application {
@@ -58,7 +58,7 @@ java {
 }
 
 publishing {
-    repositories {
+/*    repositories {
         maven {
             val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
             val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
@@ -73,7 +73,7 @@ publishing {
                 }
             }
         }
-    }
+    }*/
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
