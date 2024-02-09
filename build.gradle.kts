@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "org.jire"
-version = "1.0.0"
+version = "1.0.1"
 description = "fast simple JS5 server"
 
 application {
