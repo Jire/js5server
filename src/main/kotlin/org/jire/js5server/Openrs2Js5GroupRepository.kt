@@ -14,16 +14,16 @@ import java.nio.file.Path
 import kotlin.math.min
 import kotlin.math.pow
 
-class Openrs2Js5GroupRepository(
-    private val store: Store = DiskStore.open(Path.of("data", "cache")),
-    private val masterIndex: Js5MasterIndex = Js5MasterIndex.create(store)
-) : Js5GroupRepository {
+class Openrs2Js5GroupRepository : Js5GroupRepository {
 
     private val map: Int2ObjectMap<ByteBuf> = Int2ObjectOpenHashMap(2.toDouble().pow(17).toInt())
 
     override fun get(bitpack: Int): ByteBuf? = map[bitpack]
 
-    override fun load() {
+    override fun load(path: Path) {
+        val store: Store = DiskStore.open(path)
+        val masterIndex: Js5MasterIndex = Js5MasterIndex.create(store)
+
         encodeMasterIndex(masterIndex)
 
         for (archive in store.list()) {
