@@ -2,6 +2,7 @@ package org.jire.js5server
 
 import org.jire.js5server.codec.js5.Js5Handler
 import java.io.FileInputStream
+import java.nio.file.Path
 import java.util.*
 
 object Main {
@@ -15,7 +16,12 @@ object Main {
         }
         val config = Js5ServiceConfig(props)
 
-        val service = Js5Service(config)
+        val groupRepository =
+            (Class.forName(config.groupRepository).getDeclaredConstructor().newInstance() as Js5GroupRepository).apply {
+                load(Path.of(config.cachePath))
+            }
+
+        val service = Js5Service(config, groupRepository)
 
         for (port in config.listenPorts) {
             service.listen(port)

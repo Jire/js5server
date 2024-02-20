@@ -4,6 +4,7 @@ import java.util.*
 
 data class Js5ServiceConfig(
     val cachePath: String,
+    val groupRepository: String,
 
     val listenPorts: IntArray,
 
@@ -15,6 +16,7 @@ data class Js5ServiceConfig(
 
     constructor(properties: Properties) : this(
         properties.getProperty("cache_path"),
+        properties.getProperty("group_repository"),
 
         properties.getProperty("listen_ports")
             .split(", ")
@@ -38,6 +40,7 @@ data class Js5ServiceConfig(
         if (checkVersion != other.checkVersion) return false
         if (supportPrefetch != other.supportPrefetch) return false
         if (cachePath != other.cachePath) return false
+        if (groupRepository != other.groupRepository) return false
 
         return true
     }
@@ -48,6 +51,7 @@ data class Js5ServiceConfig(
         result = 31 * result + checkVersion.hashCode()
         result = 31 * result + supportPrefetch.hashCode()
         result = 31 * result + cachePath.hashCode()
+        result = 31 * result + groupRepository.hashCode()
         return result
     }
 

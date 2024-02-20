@@ -1,10 +1,11 @@
 package org.jire.js5server
 
 import io.netty.buffer.ByteBuf
+import java.nio.file.Path
 
 interface Js5GroupRepository {
 
-    fun load()
+    fun load(path: Path)
 
     operator fun get(bitpack: Int): ByteBuf?
 
