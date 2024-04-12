@@ -9,9 +9,9 @@ import io.netty.handler.codec.DecoderException
 import io.netty.handler.timeout.IdleStateEvent
 import io.netty.util.concurrent.GlobalEventExecutor
 import org.jctools.queues.MessagePassingQueue
+import org.jctools.queues.MpscArrayQueue
 import org.jctools.queues.SpscArrayQueue
 import org.jire.js5server.Js5GroupRepository
-import org.jire.js5server.PipelineConstants
 import org.jire.js5server.PipelineConstants.HANDLER
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -20,7 +20,8 @@ import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
 class Js5Handler(
-    private val groupRepository: Js5GroupRepository
+    private val groupRepository: Js5GroupRepository,
+    private val needsThreadSafety: Boolean = false
 ) : SimpleChannelInboundHandler<Js5Request>() {
 
     private lateinit var prefetchQueue: MessagePassingQueue<ByteBuf>
@@ -29,8 +30,8 @@ class Js5Handler(
     private var loggedIn = false
 
     override fun handlerAdded(ctx: ChannelHandlerContext) {
-        prefetchQueue = SpscArrayQueue(QUEUE_CAPACITY)
-        onDemandQueue = SpscArrayQueue(QUEUE_CAPACITY)
+        prefetchQueue = newMessagePassingQueue(QUEUE_CAPACITY, needsThreadSafety)
+        onDemandQueue = newMessagePassingQueue(QUEUE_CAPACITY, needsThreadSafety)
 
         val channel = ctx.channel()
         channels.add(channel)
@@ -120,6 +121,13 @@ class Js5Handler(
         private val logger: Logger = LoggerFactory.getLogger(Js5Handler::class.java)
 
         private val channels: ChannelGroup = DefaultChannelGroup(GlobalEventExecutor.INSTANCE)
+
+        private fun newMessagePassingQueue(
+            capacity: Int,
+            needsThreadSafety: Boolean
+        ): MessagePassingQueue<ByteBuf> =
+            if (needsThreadSafety) MpscArrayQueue(capacity)
+            else SpscArrayQueue(capacity)
 
         @JvmStatic
         fun startPrefetching(): ScheduledFuture<*> =
