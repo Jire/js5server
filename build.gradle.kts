@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "org.jire"
-version = "1.0.2"
+version = "1.0.3"
 description = "fast simple JS5 server"
 
 application {
@@ -58,22 +58,6 @@ java {
 }
 
 publishing {
-/*    repositories {
-        maven {
-            val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-            val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-            url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
-
-            val ossrhUsername = providers.environmentVariable("OSSRH_USERNAME")
-            val ossrhPassword = providers.environmentVariable("OSSRH_PASSWORD")
-            if (ossrhUsername.isPresent && ossrhPassword.isPresent) {
-                credentials {
-                    username = ossrhUsername.get()
-                    password = ossrhPassword.get()
-                }
-            }
-        }
-    }*/
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])

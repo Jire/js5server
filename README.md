@@ -11,11 +11,11 @@ Configure with `js5server.properties` file.
 In `build.gradle.kts` (Kotlin)
 
 ```kotlin
-implementation("org.jire:js5server:1.0.1")
+implementation("org.jire:js5server:1.0.3")
 ```
 
 Or in `build.gradle` (Groovy)
 
 ```groovy
-implementation 'org.jire:js5server:1.0.1'
+implementation 'org.jire:js5server:1.0.3'
 ```
