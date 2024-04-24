@@ -46,6 +46,8 @@ dependencies {
 
     for (module in listOf("buffer", "cache"))
         implementation("org.openrs2:openrs2-$module:0.1.0-SNAPSHOT")
+
+    implementation("com.displee:rs-cache-library:7.1.3")
 }
 
 kotlin {
