@@ -23,7 +23,7 @@ class Js5ChannelInitializer(
         ch.pipeline().run {
             addLast(
                 IDLE_STATE_HANDLER,
-                IdleStateHandler(true, 0, 0, timeout, timeoutUnit)
+                IdleStateHandler(true, timeout, timeout, timeout, timeoutUnit)
             )
 
             addLast(DECODER, InitDecoder())
